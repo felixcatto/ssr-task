@@ -1,0 +1,53 @@
+.root {
+  --maxHeightTransitionDuration: 0.25s;
+  --transformTransitionDuration: 0.25s;
+  --transitionDelay: calc(var(--maxHeightTransitionDuration) * 0.67);
+  --animationDuration: calc(var(--transitionDelay) + var(--transformTransitionDuration));
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 10px;
+  padding: 10px 4px;
+  overflow: hidden;
+}
+
+.item {
+  @apply flex items-center rounded shadow-md;
+  position: relative;
+  max-width: 450px;
+  padding-left: 24px;
+  padding-right: 10px;
+  padding-top: 6px;
+  padding-bottom: 10px;
+  background: white;
+  transform: translateX(0);
+  max-height: 500px;
+  transition-duration: var(--maxHeightTransitionDuration), var(--transformTransitionDuration);
+  transition-delay: 0s, var(--transitionDelay);
+  transition-property: max-height, transform;
+  transition-timing-function: ease-out, ease;
+  will-change: transform;
+
+  &_hidden {
+    max-height: 0;
+    transform: translateX(calc(100% + 5px));
+  }
+
+  &_inverseAnimation {
+    transition-delay: var(--transitionDelay), 0s;
+  }
+
+  &:before {
+    @apply rounded;
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 5px;
+    bottom: 5px;
+    width: 6px;
+    background: var(--primary);
+  }
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}

@@ -1,0 +1,227 @@
+@import './bootstrap-grid.css';
+@import './fontawesome.min.css';
+@import './regular.css';
+@import './solid.css';
+@tailwind base;
+
+:root {
+  --headerHeight: 70px;
+  --content-py: 20px;
+
+  --primary: #512da8;
+  --primary-light: #8e24aa;
+  --primary-dark: #311b92;
+  --primary-rgba-50: rgba(81, 45, 168, 0.5);
+  --primary-rgba-25: rgba(81, 45, 168, 0.25);
+  --secondary: #1976d2;
+  --secondary-light: #e3f2fd;
+  --secondary-dark: #1156b0; /* #0d47a1 #1565c0 */
+  --secondary-rgba-25: rgba(25, 118, 210, 0.25);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  font-size: 18px;
+}
+
+@font-face {
+  font-family: Ubuntu;
+  src: url('/font/Ubuntu-Regular.ttf');
+}
+
+body {
+  font-family: Ubuntu;
+  background-image: url('/img/s2.webp');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+h1,
+h2,
+h3 {
+  margin-bottom: 10px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.75rem;
+}
+
+.btn {
+  @apply shadow;
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid;
+  border-radius: 6px;
+  line-height: 1.3;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  vertical-align: middle;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  color: #fff;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  &:hover {
+    text-decoration: none;
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+  }
+  &:active,
+  &:focus {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    box-shadow: 0 0 0 3.2px var(--primary-rgba-50);
+  }
+
+  &_sm {
+    padding: 4px 8px;
+    font-size: 0.875rem;
+    border-radius: 4px;
+  }
+}
+
+a,
+.link {
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  color: var(--secondary);
+  transition: 0.15s;
+  &:hover {
+    text-decoration: underline;
+  }
+  &_disabled {
+    color: black;
+    opacity: 0.5;
+    cursor: not-allowed;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.input {
+  @apply border border-slate-300;
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  background-color: #fff;
+  background-clip: padding-box;
+  appearance: none;
+  border-radius: 6px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  &_hover:hover {
+    border-color: var(--primary);
+  }
+  &:focus {
+    border-color: var(--primary);
+    outline: 0;
+    box-shadow: 0 0 0 4px var(--primary-rgba-25);
+  }
+  &_inline {
+    width: auto;
+  }
+}
+
+.fa,
+.far {
+  color: var(--primary);
+  transition: color 0.15s;
+  &_big {
+    padding: 2px 5px;
+  }
+  &_link {
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+      text-decoration: none;
+      color: var(--secondary);
+    }
+  }
+  &_hint {
+    font-size: 20px;
+    cursor: help;
+    user-select: none;
+  }
+  &_secondary {
+    color: var(--secondary);
+  }
+  &_noColor {
+    color: inherit;
+  }
+}
+
+table {
+  width: 100%;
+  & th,
+  & td {
+    padding: 8px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  & th {
+    @apply bg-gray-100;
+    color: var(--secondary);
+    text-align: left;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.error {
+  color: #c9302c;
+}
+
+.text-primary {
+  color: var(--primary);
+}
+.text-secondary {
+  color: var(--secondary);
+}
+
+.nav-link {
+  padding: 0px 6px;
+  padding-bottom: 2px;
+  margin-right: 20px;
+  border-radius: 12px;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  &:last-child {
+    margin-right: 0;
+  }
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  &_active {
+    background: #fff;
+    color: var(--primary);
+    &:hover {
+      color: var(--primary);
+      text-decoration: none;
+    }
+  }
+}
+
+@tailwind components;
+@tailwind utilities;

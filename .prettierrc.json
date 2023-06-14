@@ -1,0 +1,7 @@
+{
+  "printWidth": 100,
+  "singleQuote": true,
+  "arrowParens": "avoid",
+  "importOrder": ["<THIRD_PARTY_MODULES>", "^[./]"],
+  "importOrderSortSpecifiers": true
+}

@@ -1,0 +1,7 @@
+.next
+dist
+*.css.d.ts
+*.min.css
+
+# hack, because "@trivago/prettier-plugin-sort-imports" can't skip part of file
+client/main/entry-client.tsx
