@@ -1,5 +1,11 @@
 import '../css/index.css'; // Import FIRST
-import { createRoot } from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client';
+import { Router } from 'wouter';
 import { App } from '../common/App.jsx';
 
-createRoot(document.getElementById('root')!).render(<App />);
+hydrateRoot(
+  document.getElementById('root')!,
+  <Router>
+    <App />
+  </Router>
+);

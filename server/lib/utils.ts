@@ -164,18 +164,6 @@ export const loggerPlugin = fp(async app => {
   });
 });
 
-export const corsOptions = {
-  origin: (origin, cb) => {
-    const { hostname } = new URL(origin!);
-    //  Request from localhost will pass
-    if (hostname === 'localhost') return cb(null, true);
-
-    // Generate an error on other origins, disabling access
-    cb(new Error('Not allowed'), false);
-  },
-  credentials: true,
-};
-
 export const loggerOptions = {
   disableRequestLogging: true,
   logger: {

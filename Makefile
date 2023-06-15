@@ -20,6 +20,7 @@ build:
 	rm -rf dist
 	npx swc server -C jsc.target=es2022 -d dist
 	npx vite build
+	npx vite build --outDir dist/public/server --ssr client/main/entry-server.tsx
 
 lint:
 	npx eslint .

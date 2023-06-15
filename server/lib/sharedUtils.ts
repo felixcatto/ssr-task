@@ -25,12 +25,8 @@ export const routes = {
 
 export const getUrl = makeUrlFor(routes);
 
-export const getApiUrl = (name: keyof typeof routes, routeParams?) => {
-  const { protocol, hostname } = window.location;
-  const port = import.meta.env.VITE_NODE_APP_PORT;
-  const url = getUrl(name, routeParams);
-  return `${protocol}//${hostname}:${port}/api${url}`;
-};
+export const getApiUrl = (name: keyof typeof routes, routeParams?) =>
+  `/api${getUrl(name, routeParams)}`;
 
 export const makeEnum: IMakeEnum = (...args) =>
   args.reduce((acc, key) => ({ ...acc, [key]: key }), {} as any);

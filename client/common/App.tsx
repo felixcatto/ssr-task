@@ -14,7 +14,7 @@ import { Users } from '../pages/users/Users.jsx';
 export const App = () => {
   const setGlobalState = useSetGlobalState();
 
-  const axios = originalAxios.create({ withCredentials: true });
+  const axios = originalAxios.create();
   axios.interceptors.response.use(
     response => response.data,
     error => Promise.reject(error)

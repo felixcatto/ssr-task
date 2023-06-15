@@ -1,4 +1,3 @@
-import cors from '@fastify/cors';
 import fastifyStatic from '@fastify/static';
 import fastify from 'fastify';
 import fs from 'fs';
@@ -45,8 +44,6 @@ const getApp = () => {
 
   if (isProduction(mode)) {
     app.register(fastifyStatic, { root: pathPublic, wildcard: false, index: false });
-  } else if (isDevelopment(mode)) {
-    app.register(cors, corsOptions);
   }
 
   app.register(routes);
