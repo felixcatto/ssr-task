@@ -157,3 +157,9 @@ type IMakeNotificationOpts = {
   autoremoveTimeout?: INotification['autoremoveTimeout'];
 } & (INotificationText | INotificationComponent);
 export type IMakeNotification = (opts: IMakeNotificationOpts) => INotification;
+
+declare global {
+  interface Window {
+    stitchesCss: string;
+  }
+}

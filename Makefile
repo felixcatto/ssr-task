@@ -2,7 +2,7 @@ install:
 	npm i
 
 start-client:
-	npx vite dev
+	node --loader @swc-node/register/esm server/bin/devServer.ts
 
 start-server:
 	npx nodemon --watch 'server/*' \
@@ -10,7 +10,7 @@ start-server:
 
 start:
 	npx concurrently \
-		"npx vite dev" \
+		"node --loader @swc-node/register/esm server/bin/devServer.ts" \
 		"npx nodemon --watch 'server/*' --exec 'node --loader @swc-node/register/esm' server/bin/server.ts"
 
 start-prod-server:
