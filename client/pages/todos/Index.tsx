@@ -18,7 +18,7 @@ import {
 } from '../../lib/utils.js';
 import { makeNotification } from '../../ui/Notifications.jsx';
 
-const TodoList = () => {
+const TodosRaw = () => {
   const { data: todos, mutate } = useSWR<ITodo[]>(getApiUrl('todos'));
   console.log(todos);
   const { axios } = useContext();
@@ -200,4 +200,4 @@ const s = {
   }),
 };
 
-export default WithApiErrors(TodoList);
+export const Todos = WithApiErrors(TodosRaw);

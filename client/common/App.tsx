@@ -8,10 +8,10 @@ import { IAppProps, IContext } from '../../server/lib/types.js';
 import makeActions from '../globalStore/actions.js';
 import { storeSlice } from '../globalStore/store.js';
 import { Context } from '../lib/context.jsx';
-import Login from '../pages/session/Login.jsx';
-import Todolist from '../pages/todoList/Todolist.jsx';
-import { User } from '../pages/users/User.jsx';
-import { Users } from '../pages/users/Users.jsx';
+import { NewSession } from '../pages/session/New.jsx';
+import { Todos } from '../pages/todos/Index.jsx';
+import { User } from '../pages/users/$id.jsx';
+import { Users } from '../pages/users/Index.jsx';
 
 export const App = (props: IAppProps) => {
   const { currentUser } = props;
@@ -48,8 +48,8 @@ export const App = (props: IAppProps) => {
     <Context.Provider value={contextStore}>
       <SWRConfig value={swrConfig}>
         <Switch>
-          <Route path={routes.home} component={Todolist} />
-          <Route path={routes.newSession} component={Login} />
+          <Route path={routes.home} component={Todos} />
+          <Route path={routes.newSession} component={NewSession} />
           <Route path={routes.users} component={Users} />
           <Route path={routes.user} component={User} />
         </Switch>

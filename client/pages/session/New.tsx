@@ -14,7 +14,7 @@ import {
   useSubmit,
 } from '../../lib/utils.js';
 
-const Login = () => {
+const NewSessionRaw = () => {
   const { axios } = useContext();
   const setGlobalState = useSetGlobalState();
   const [_, navigate] = useLocation();
@@ -56,4 +56,4 @@ const Login = () => {
   );
 };
 
-export default WithApiErrors(Login);
+export const NewSession = WithApiErrors(NewSessionRaw);
