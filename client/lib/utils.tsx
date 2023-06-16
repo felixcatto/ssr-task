@@ -13,7 +13,7 @@ import { Context, FormContext } from './context.js';
 
 export const useContext = () => React.useContext<IContext>(Context);
 
-export const { css } = createStitches({
+export const { css, getCssText } = createStitches({
   utils: {
     w: value => ({ width: value }),
     h: value => ({ height: value }),
