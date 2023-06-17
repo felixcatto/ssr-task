@@ -1,5 +1,4 @@
 import { Form, Formik } from 'formik';
-import { useLocation } from 'wouter';
 import { getApiUrl, getUrl } from '../../../server/lib/sharedUtils.js';
 import { IUser, IUserLoginCreds } from '../../../server/lib/types.js';
 import Layout from '../../common/Layout.jsx';
@@ -10,6 +9,7 @@ import {
   SubmitBtn,
   WithApiErrors,
   useContext,
+  useNavigate,
   useSetGlobalState,
   useSubmit,
 } from '../../lib/utils.js';
@@ -17,7 +17,7 @@ import {
 const NewSessionRaw = () => {
   const { axios } = useContext();
   const setGlobalState = useSetGlobalState();
-  const [_, navigate] = useLocation();
+  const navigate = useNavigate();
 
   const onSubmit = useSubmit(async (userCreds: IUserLoginCreds) => {
     const user: IUser = await axios.post(getApiUrl('session'), userCreds);

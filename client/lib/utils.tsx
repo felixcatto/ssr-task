@@ -5,9 +5,10 @@ import { useFormikContext } from 'formik';
 import { omit } from 'lodash-es';
 import React from 'react';
 import stringMath from 'string-math';
-import { Link as RawLink, useLocation } from 'wouter';
+import { preload } from 'swr';
+import { useLocation } from 'wouter';
 import { useStore as useStoreRaw } from 'zustand';
-import { getApiUrl, roles } from '../../server/lib/sharedUtils.js';
+import { getApiUrl, getGenericRouteByHref, roles } from '../../server/lib/sharedUtils.js';
 import { IApiErrors, IContext, IUseStore, IUseSubmit } from '../../server/lib/types.js';
 import { Context, FormContext } from './context.js';
 
@@ -121,13 +122,29 @@ export const useStore: IUseStore = selector => {
 
 export const useSetGlobalState = () => useStore(state => state.setGlobalState);
 
+export const useNavigate = () => {
+  const { axios } = useContext();
+  const [_, setLocation] = useLocation();
+
+  const navigate = async href => {
+    const isRouteWithLoader = getGenericRouteByHref(href);
+    if (isRouteWithLoader) {
+      await preload(getApiUrl('loaderData', {}, { url: href }), axios.get);
+    }
+    setLocation(href);
+  };
+
+  return navigate;
+};
+
 export const Link = ({ href, children, className = 'link', shouldOverrideClass = false }) => {
+  const navigate = useNavigate();
   const linkClass = shouldOverrideClass ? className : cn('link', className);
 
   return (
-    <RawLink href={href} className={linkClass}>
+    <div className={linkClass} onClick={() => navigate(href)}>
       {children}
-    </RawLink>
+    </div>
   );
 };
 
@@ -139,9 +156,9 @@ export const NavLink = ({ href, children }) => {
   });
 
   return (
-    <RawLink href={href} className={className}>
+    <Link href={href} className={className}>
       {children}
-    </RawLink>
+    </Link>
   );
 };
 

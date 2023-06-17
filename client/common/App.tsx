@@ -26,7 +26,6 @@ export const App = (props: IInitialState) => {
   const swrConfig = {
     fetcher: axios.get,
     revalidateOnFocus: false,
-    dedupingInterval: 7000,
     fallback: { [loaderUrl]: loaderData },
   };
 
