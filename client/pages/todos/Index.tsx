@@ -13,13 +13,20 @@ import {
   WithApiErrors,
   css,
   useContext,
+  useLoaderUrl,
   useStore,
   useSubmit,
 } from '../../lib/utils.js';
 import { makeNotification } from '../../ui/Notifications.jsx';
 
+type ILoaderData = {
+  todos: ITodo[];
+};
+
 const TodosRaw = () => {
-  const { data: todos, mutate } = useSWR<ITodo[]>(getApiUrl('todos'));
+  const loaderUrl = useLoaderUrl();
+  const { data, mutate } = useSWR<ILoaderData>(loaderUrl);
+  const todos = data?.todos || [];
   console.log(todos);
   const { axios } = useContext();
   const { isSignedIn } = useStore(session);

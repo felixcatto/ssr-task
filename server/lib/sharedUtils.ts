@@ -1,5 +1,16 @@
-import { compile } from 'path-to-regexp';
-import { IMakeEnum, IMakeUrlFor } from './types.js';
+import { isEmpty } from 'lodash-es';
+import { compile, match } from 'path-to-regexp';
+import { IGetGenericRouteByHref, IMakeEnum, IMakeUrlFor } from './types.js';
+
+export const qs = {
+  stringify: (obj = {}) => {
+    if (isEmpty(obj)) return '';
+    return Object.keys(obj)
+      .sort()
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
+      .join('&');
+  },
+};
 
 export const makeUrlFor: IMakeUrlFor = rawRoutes => {
   const routes = Object.keys(rawRoutes).reduce(
@@ -7,9 +18,9 @@ export const makeUrlFor: IMakeUrlFor = rawRoutes => {
     {} as any
   );
 
-  return (name, routeParams = {}) => {
+  return (name, routeParams = {}, query = {}) => {
     const toPath = routes[name];
-    return toPath(routeParams);
+    return isEmpty(query) ? toPath(routeParams) : `${toPath(routeParams)}?${qs.stringify(query)}`;
   };
 };
 
@@ -21,12 +32,31 @@ export const routes = {
   todo: '/todos/:id',
   session: '/session',
   newSession: '/session/new',
+  loaderData: '/loader-data',
 } as const;
 
 export const getUrl = makeUrlFor(routes);
 
-export const getApiUrl = (name: keyof typeof routes, routeParams?) =>
-  `/api${getUrl(name, routeParams)}`;
+export const getApiUrl = (name: keyof typeof routes, routeParams?, query?) =>
+  `/api${getUrl(name, routeParams, query)}`;
+
+export const routesWithLoaders = [routes.home, routes.users, routes.user] as const;
+
+export const getGenericRouteByHref: IGetGenericRouteByHref = href => {
+  let matchedRoute = null as any;
+  const genericRoutes = routesWithLoaders;
+
+  for (let i = 0; i < genericRoutes.length; i++) {
+    const genericRoute = genericRoutes[i];
+    const isMatched = match(genericRoute)(href);
+    if (isMatched) {
+      matchedRoute = { url: genericRoute, params: isMatched.params };
+      break;
+    }
+  }
+
+  return matchedRoute;
+};
 
 export const makeEnum: IMakeEnum = (...args) =>
   args.reduce((acc, key) => ({ ...acc, [key]: key }), {} as any);

@@ -1,11 +1,18 @@
 import useSWR from 'swr';
-import { getApiUrl, getUrl } from '../../../server/lib/sharedUtils.js';
+import { getUrl } from '../../../server/lib/sharedUtils.js';
 import { IUser } from '../../../server/lib/types.js';
 import Layout from '../../common/Layout.jsx';
-import { Link, userRolesToIcons } from '../../lib/utils.js';
+import { Link, useLoaderUrl, userRolesToIcons } from '../../lib/utils.js';
+
+type ILoaderData = {
+  users: IUser[];
+};
 
 export const Users = () => {
-  const { data: users } = useSWR<IUser[]>(getApiUrl('users'));
+  const loaderUrl = useLoaderUrl();
+  const { data } = useSWR<ILoaderData>(loaderUrl);
+  const users = data?.users || [];
+  console.log(users);
 
   return (
     <Layout>

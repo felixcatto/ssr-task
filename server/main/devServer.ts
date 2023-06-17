@@ -4,6 +4,7 @@ import proxy from 'express-http-proxy';
 import fs from 'fs';
 import path from 'path';
 import { createServer } from 'vite';
+import { IInitialState } from '../lib/types.js';
 import { dirname, getApiUrl } from '../lib/utils.js';
 
 export const getViteDevServer = async () => {
@@ -25,11 +26,18 @@ export const getViteDevServer = async () => {
   app.use('*', async (req, res, next) => {
     try {
       const url = req.originalUrl;
-      const { data } = await axios.get(getApiUrl('session'), {
-        baseURL: nodeAppUrl,
-        headers: req.headers,
-      });
-      const initialState = { currentUser: data.currentUser };
+      const axiosOptions = { baseURL: nodeAppUrl, headers: req.headers };
+
+      const [session, loaderData] = await Promise.all([
+        axios.get(getApiUrl('session'), axiosOptions),
+        axios.get(getApiUrl('loaderData', {}, { url }), axiosOptions),
+      ]);
+
+      const initialState = {
+        currentUser: session.data.currentUser,
+        loaderData: loaderData.data,
+        pathname: url,
+      } as IInitialState;
 
       const template = await vite.transformIndexHtml(url, rawTemplate);
       const { render } = await vite.ssrLoadModule('/client/main/entry-server.tsx');

@@ -8,6 +8,7 @@ import makeActions from '../../client/globalStore/actions.js';
 import { storeSlice } from '../../client/globalStore/store.js';
 import {
   asyncStates,
+  loaderDataSchema,
   roles,
   todoPostGuestSchema,
   todoPostUserSchema,
@@ -70,12 +71,14 @@ export interface IAxiosInstance extends AxiosInstance {
   patch<T = any, R = T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
 }
 
+export type IDb = {
+  users: IUser[];
+  todos: ITodo[];
+};
+
 declare module 'fastify' {
   interface FastifyInstance {
-    db: {
-      users: IUser[];
-      todos: ITodo[];
-    };
+    db: IDb;
     mode: IMode;
     keygrip: any;
     template: string;
@@ -162,13 +165,19 @@ type IMakeNotificationOpts = {
 } & (INotificationText | INotificationComponent);
 export type IMakeNotification = (opts: IMakeNotificationOpts) => INotification;
 
-export type IAppProps = {
+export type IInitialState = {
   currentUser: IUser;
+  loaderData: IAnyObj;
+  pathname: string;
 };
 
 declare global {
   interface Window {
     stitchesCss: string;
-    INITIAL_STATE: IAppProps;
+    INITIAL_STATE: IInitialState;
   }
 }
+
+export type IGetGenericRouteByHref = (href: string) => { url: string; params: object } | null;
+
+export type ILoaderDataSchema = y.InferType<typeof loaderDataSchema>;

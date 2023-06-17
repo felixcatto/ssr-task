@@ -196,3 +196,7 @@ export const todoPutSchema = y.object({
   text: y.string().required('required'),
   is_completed: y.boolean(),
 });
+
+export const loaderDataSchema = y.object({
+  url: y.string().required(),
+});

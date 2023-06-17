@@ -7,7 +7,7 @@ import React from 'react';
 import stringMath from 'string-math';
 import { Link as RawLink, useLocation } from 'wouter';
 import { useStore as useStoreRaw } from 'zustand';
-import { roles } from '../../server/lib/sharedUtils.js';
+import { getApiUrl, roles } from '../../server/lib/sharedUtils.js';
 import { IApiErrors, IContext, IUseStore, IUseSubmit } from '../../server/lib/types.js';
 import { Context, FormContext } from './context.js';
 
@@ -143,4 +143,9 @@ export const NavLink = ({ href, children }) => {
       {children}
     </RawLink>
   );
+};
+
+export const useLoaderUrl = () => {
+  const [url] = useLocation();
+  return getApiUrl('loaderData', {}, { url });
 };

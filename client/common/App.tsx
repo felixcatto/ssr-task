@@ -3,8 +3,8 @@ import { SWRConfig } from 'swr';
 import { Route, Switch } from 'wouter';
 import { createStore } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { routes } from '../../server/lib/sharedUtils.js';
-import { IAppProps, IContext } from '../../server/lib/types.js';
+import { getApiUrl, routes } from '../../server/lib/sharedUtils.js';
+import { IContext, IInitialState } from '../../server/lib/types.js';
 import makeActions from '../globalStore/actions.js';
 import { storeSlice } from '../globalStore/store.js';
 import { Context } from '../lib/context.jsx';
@@ -13,8 +13,9 @@ import { Todos } from '../pages/todos/Index.jsx';
 import { User } from '../pages/users/$id.jsx';
 import { Users } from '../pages/users/Index.jsx';
 
-export const App = (props: IAppProps) => {
-  const { currentUser } = props;
+export const App = (props: IInitialState) => {
+  const { currentUser, loaderData, pathname } = props;
+  const loaderUrl = getApiUrl('loaderData', {}, { url: pathname });
 
   const axios = originalAxios.create();
   axios.interceptors.response.use(
@@ -26,6 +27,7 @@ export const App = (props: IAppProps) => {
     fetcher: axios.get,
     revalidateOnFocus: false,
     dedupingInterval: 7000,
+    fallback: { [loaderUrl]: loaderData },
   };
 
   const initializedStoreSlice = Object.keys(storeSlice).reduce((acc, key) => {
