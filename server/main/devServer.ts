@@ -1,9 +1,10 @@
+import axios from 'axios';
 import express from 'express';
 import proxy from 'express-http-proxy';
 import fs from 'fs';
 import path from 'path';
 import { createServer } from 'vite';
-import { dirname } from '../lib/utils.js';
+import { dirname, getApiUrl } from '../lib/utils.js';
 
 export const getViteDevServer = async () => {
   const __dirname = dirname(import.meta.url);
@@ -24,15 +25,23 @@ export const getViteDevServer = async () => {
   app.use('*', async (req, res, next) => {
     try {
       const url = req.originalUrl;
+      const { data } = await axios.get(getApiUrl('session'), {
+        baseURL: nodeAppUrl,
+        headers: req.headers,
+      });
+      const initialState = { currentUser: data.currentUser };
+
       const template = await vite.transformIndexHtml(url, rawTemplate);
       const { render } = await vite.ssrLoadModule('/client/main/entry-server.tsx');
 
-      const { appHtml, stitchesCss } = render(url);
-      const cssInJsClasses = `window.stitchesCss = \`${stitchesCss}\``;
+      const { appHtml, stitchesCss } = render(url, initialState);
+      const cssInJsScript = `window.stitchesCss = \`${stitchesCss}\`;`;
+      const initialStateScript = `window.INITIAL_STATE = ${JSON.stringify(initialState)}`;
+      const script = cssInJsScript.concat(initialStateScript);
 
       const html = template
         .replace('<!-- content -->', appHtml)
-        .replace('// script', cssInJsClasses)
+        .replace('// script', script)
         .replace('<body>', '<body style="display: none">'); // avoid FOUC in dev mode
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);

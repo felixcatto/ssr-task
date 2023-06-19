@@ -9,7 +9,6 @@ import {
   Link,
   SubmitBtn,
   WithApiErrors,
-  persistUser,
   useContext,
   useSetGlobalState,
   useSubmit,
@@ -23,7 +22,6 @@ const Login = () => {
   const onSubmit = useSubmit(async (userCreds: IUserLoginCreds) => {
     const user: IUser = await axios.post(getApiUrl('session'), userCreds);
     setGlobalState({ currentUser: user });
-    persistUser(user);
     navigate(getUrl('home'));
   });
 

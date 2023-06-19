@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { getApiUrl } from '../../../server/lib/sharedUtils.js';
 import { ITodo } from '../../../server/lib/types.js';
 import Layout from '../../common/Layout.jsx';
-import { session, useStore } from '../../globalStore/store.js';
+import { session } from '../../globalStore/store.js';
 import {
   ErrorMessage,
   Field,
@@ -13,6 +13,7 @@ import {
   WithApiErrors,
   css,
   useContext,
+  useStore,
   useSubmit,
 } from '../../lib/utils.js';
 import { makeNotification } from '../../ui/Notifications.jsx';

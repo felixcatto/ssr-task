@@ -6,9 +6,9 @@ import { omit } from 'lodash-es';
 import React from 'react';
 import stringMath from 'string-math';
 import { Link as RawLink, useLocation } from 'wouter';
-import { guestUser, roles } from '../../server/lib/sharedUtils.js';
-import { IApiErrors, IContext, IUseSubmit, IUser } from '../../server/lib/types.js';
-import { useStore } from '../globalStore/store.js';
+import { useStore as useStoreRaw } from 'zustand';
+import { roles } from '../../server/lib/sharedUtils.js';
+import { IApiErrors, IContext, IUseStore, IUseSubmit } from '../../server/lib/types.js';
 import { Context, FormContext } from './context.js';
 
 export const useContext = () => React.useContext<IContext>(Context);
@@ -114,6 +114,11 @@ export const SubmitBtn = ({ children, ...props }) => {
 export const getCssValue = (cssValue: string) =>
   stringMath(cssValue.trim().replaceAll('calc', '').replaceAll('s', ''));
 
+export const useStore: IUseStore = selector => {
+  const { globalStore } = useContext();
+  return useStoreRaw(globalStore, selector);
+};
+
 export const useSetGlobalState = () => useStore(state => state.setGlobalState);
 
 export const Link = ({ href, children, className = 'link', shouldOverrideClass = false }) => {
@@ -138,16 +143,4 @@ export const NavLink = ({ href, children }) => {
       {children}
     </RawLink>
   );
-};
-
-export const localStorageUserKey = 'currentUser';
-export const persistUser = (user: IUser) => {
-  localStorage.setItem(localStorageUserKey, JSON.stringify(user));
-};
-export const removePersistedUser = () => {
-  localStorage.removeItem(localStorageUserKey);
-};
-export const restoreUser = (): IUser => {
-  const serializedUser = localStorage.getItem(localStorageUserKey);
-  return serializedUser ? JSON.parse(serializedUser) : guestUser;
 };

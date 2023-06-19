@@ -10,8 +10,8 @@ start-server:
 
 start:
 	npx concurrently \
-		"node --loader @swc-node/register/esm server/bin/devServer.ts" \
-		"npx nodemon --watch 'server/*' --exec 'node --loader @swc-node/register/esm' server/bin/server.ts"
+		"npx nodemon --watch 'server/*' --exec 'node --loader @swc-node/register/esm' server/bin/server.ts" \
+		"node --loader @swc-node/register/esm server/bin/devServer.ts"
 
 start-prod-server:
 	NODE_ENV=production node dist/bin/server.js

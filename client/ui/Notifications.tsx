@@ -2,8 +2,7 @@ import cn from 'classnames';
 import { uniqueId } from 'lodash-es';
 import React from 'react';
 import { IMakeNotification } from '../../server/lib/types.js';
-import { useStore } from '../globalStore/store.js';
-import { getCssValue, useSetGlobalState } from '../lib/utils.jsx';
+import { getCssValue, useSetGlobalState, useStore } from '../lib/utils.jsx';
 import s from './Notifications.module.css';
 
 export const Notifications = () => {

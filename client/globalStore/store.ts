@@ -1,16 +1,13 @@
 import { memoize } from 'proxy-memoize';
-import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
 import { guestUser, isAdmin, isSignedIn } from '../../server/lib/sharedUtils.js';
-import { INotification, IStoreSlice, IUseStore, IUser } from '../../server/lib/types.js';
-import makeActions from './actions.js';
+import { INotification, IStoreSlice, IUser } from '../../server/lib/types.js';
 
 export const storeSlice = {
-  currentUser: guestUser as IUser,
+  currentUser: (initialState: IUser = guestUser) => initialState,
 
-  notificationAnimationDuration: 0,
+  notificationAnimationDuration: (initialState = 0) => initialState,
 
-  notifications: [] as INotification[],
+  notifications: (initialState: INotification[] = []) => initialState,
 };
 
 export const session = memoize((state: IStoreSlice) => {
@@ -21,11 +18,3 @@ export const session = memoize((state: IStoreSlice) => {
     isAdmin: isAdmin(currentUser),
   };
 });
-
-export const useStore: IUseStore = create<any>(
-  immer((set, get) => ({
-    setGlobalState: set,
-    ...makeActions(set, get),
-    ...storeSlice,
-  }))
-);

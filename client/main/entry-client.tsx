@@ -20,6 +20,6 @@ if (isDevelopment) {
 hydrateRoot(
   document.getElementById('root')!,
   <Router>
-    <App />
+    <App {...window.INITIAL_STATE} />
   </Router>
 );

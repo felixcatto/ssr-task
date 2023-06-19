@@ -3,10 +3,10 @@ import { Router } from 'wouter';
 import { App } from '../common/App.jsx';
 import { getCssText } from '../lib/utils.jsx';
 
-export const render = url => {
+export const render = (url, initialState) => {
   const appHtml = renderToString(
     <Router ssrPath={url}>
-      <App />
+      <App {...initialState} />
     </Router>
   );
 

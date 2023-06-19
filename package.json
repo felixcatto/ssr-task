@@ -5,7 +5,7 @@
   "description": "",
   "main": "?",
   "scripts": {
-    "start": "concurrently \"node --loader @swc-node/register/esm server/bin/devServer.ts\" \"npx nodemon --watch 'server/*' --exec 'node --loader @swc-node/register/esm' server/bin/server.ts\"",
+    "start": "concurrently \"npx nodemon --watch 'server/*' --exec 'node --loader @swc-node/register/esm' server/bin/server.ts\" \"node --loader @swc-node/register/esm server/bin/devServer.ts\"",
     "build": "rm -rf dist; swc server -C jsc.target=es2022 -d dist; vite build; vite build --outDir dist/public/server --ssr client/main/entry-server.tsx",
     "start-prod-server": "NODE_ENV=production node dist/bin/server.js",
     "lint": "eslint .; tsc;",

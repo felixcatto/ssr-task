@@ -1,13 +1,13 @@
 import cn from 'classnames';
 import { getApiUrl, getUrl } from '../../server/lib/sharedUtils.js';
-import { session, useStore } from '../globalStore/store.js';
+import { session } from '../globalStore/store.js';
 import {
   Link,
   NavLink,
   css,
-  removePersistedUser,
   useContext,
   useSetGlobalState,
+  useStore,
   userRolesToIcons,
 } from '../lib/utils.js';
 import { Notifications } from '../ui/Notifications.jsx';
@@ -20,7 +20,6 @@ const Layout = ({ children }: any) => {
   const signOut = async () => {
     const user = await axios.delete(getApiUrl('session'));
     setGlobalState({ currentUser: user });
-    removePersistedUser();
   };
 
   return (

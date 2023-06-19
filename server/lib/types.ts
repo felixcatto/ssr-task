@@ -3,7 +3,7 @@ import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { FormikHelpers } from 'formik';
 import { Draft } from 'immer';
 import * as y from 'yup';
-import { StoreApi, UseBoundStore } from 'zustand';
+import { StoreApi } from 'zustand';
 import makeActions from '../../client/globalStore/actions.js';
 import { storeSlice } from '../../client/globalStore/store.js';
 import {
@@ -120,7 +120,10 @@ export type IValidateMW = (
   yupOpts?: IYupOpts
 ) => (req, res) => any;
 
-export type IStoreSlice = typeof storeSlice;
+type IRawStoreSlice = typeof storeSlice;
+export type IStoreSlice = {
+  [key in keyof IRawStoreSlice]: ReturnType<IRawStoreSlice[key]>;
+};
 
 export type IActions = ReturnType<typeof makeActions>;
 
@@ -130,10 +133,11 @@ export type IGetGlobalState = () => IStoreSlice & IActions;
 
 export type IStore = IStoreSlice & IActions & { setGlobalState: ISetGlobalState };
 
-export type IUseStore = UseBoundStore<StoreApi<IStore>>;
+export type IUseStore = <T>(selector: (state: IStore) => T) => T;
 
 export type IContext = {
   axios: IAxiosInstance;
+  globalStore: StoreApi<IStore>;
 };
 
 export type IOnSubmit = (values, actions: FormikHelpers<any>) => Promise<any>;
@@ -158,8 +162,13 @@ type IMakeNotificationOpts = {
 } & (INotificationText | INotificationComponent);
 export type IMakeNotification = (opts: IMakeNotificationOpts) => INotification;
 
+export type IAppProps = {
+  currentUser: IUser;
+};
+
 declare global {
   interface Window {
     stitchesCss: string;
+    INITIAL_STATE: IAppProps;
   }
 }

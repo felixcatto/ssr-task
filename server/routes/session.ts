@@ -10,6 +10,11 @@ import {
 } from '../lib/utils.js';
 
 export default async (app: FastifyInstance) => {
+  app.get('/session', async req => {
+    const { currentUser } = req;
+    return { currentUser };
+  });
+
   app.post('/session', { preHandler: validate(userLoginSchema) }, async (req, res) => {
     const data: IUserLoginSchema = req.vlBody;
     const user = app.db.users.find(user => user.name === data.name);
